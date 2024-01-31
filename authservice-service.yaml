@@ -8,4 +8,4 @@ spec:
     app: authservice
   ports:
     - port: 8080
-      targetPort: 5232 # Asp.Net is listening on 5000
+      targetPort: 5232
