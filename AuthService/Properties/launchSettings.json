@@ -9,7 +9,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGO_PASSWORD": "MongoDbPassword",
-        "JWT_KEY": "asdfasdfasdfasdfasdfasdfasfasfdasdfasdfasdfasdf"
+        "JWT_KEY": "asdfasdfasdfasdfasdfasdfasfasfdasdfasdfasdfasdf",
+        "RABBITMQ_PASSWORD": "cJKdsolFHKBNwbev"
       }
     }
   }

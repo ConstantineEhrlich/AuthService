@@ -1,5 +1,5 @@
 using AuthService.Models;
-using AuthService.Services.Dto;
+using AuthService.Services.Database;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 

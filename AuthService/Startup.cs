@@ -1,5 +1,8 @@
 using System.Text;
 using AuthService.Models;
+using AuthService.Services;
+using AuthService.Services.Database;
+using AuthService.Services.UpdatePublisher;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -18,21 +21,26 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        
         services.AddCors(StartupExtensions.CorsPolicies);
         services.AddControllers(opts => opts.Filters.Add<Controllers.ExceptionFilter>());
-        services.ConfigureJwtAuthentication(new(Encoding.ASCII.GetBytes(Configuration["JWT_KEY"])));
-        services.AddScoped<Services.JwtGenerator>();
+        
+        services.Configure<UsersDatabaseSettings>(Configuration.GetSection("UsersDatabase"));
+        services.AddSingleton<UsersDatabase>();
+
+        services.Configure<UpdatePublisherSettings>(Configuration.GetSection("UpdatePublisher"));
+        services.AddSingleton<IUserUpdatePublisher, UserUpdatePublisher>();
+        
         services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
-        services.Configure<Services.UsersDatabaseSettings>(Configuration.GetSection("UsersDatabase"));
-        services.AddSingleton<Services.UsersDatabase>();
-        services.AddScoped<Services.UserService>();
-        services.AddScoped<Services.ProfileService>();
+        services.ConfigureJwtAuthentication(new(Encoding.ASCII.GetBytes(Configuration["JWT_KEY"])));
+        services.AddScoped<JwtGenerator>();
+        services.AddScoped<UserService>();
+        services.AddScoped<ProfileService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseCors("BasicCors");
-        app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();

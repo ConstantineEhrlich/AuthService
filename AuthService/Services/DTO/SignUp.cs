@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AuthService.Services.Dto;
+namespace AuthService.Services.DTO;
 
 public class SignUp
 {

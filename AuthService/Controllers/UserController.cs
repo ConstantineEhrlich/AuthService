@@ -1,6 +1,6 @@
 using AuthService.Models;
 using AuthService.Services;
-using AuthService.Services.Dto;
+using AuthService.Services.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.Controllers;
@@ -28,6 +28,7 @@ public class UserController: ControllerBase
     public async Task<IActionResult> SignUp([FromBody] SignUp signUpData)
     {
         await _users.CreateUser(signUpData);
+        _logger.LogInformation("User {} created", signUpData.Login);
         return Ok(new {Message = $"User {signUpData.Login} created"});
     }
 
@@ -43,7 +44,7 @@ public class UserController: ControllerBase
         if (u.FailedLoginCount >= MAX_FAILED_LOGIN_ATTEMPTS &&
             timeSinceLastFail.Hours < HOURS_SINCE_LAST_FAIL)
         {
-            _logger.LogInformation("Too may login attempts for user {u.Login}", u.Login);
+            _logger.LogInformation("Too may login attempts for user {}", u.Login);
             return BadRequest(new {Message = "Too many login attempts, please try again later"});
         }
         
@@ -59,6 +60,7 @@ public class UserController: ControllerBase
         Response.Cookies.Append("access_token", token, cookieOpts);
         await _users.SuccessLogin(u);
         
+        _logger.LogInformation("User {} logged in", u.Login);
         return Ok(new
         {
             Token = token,

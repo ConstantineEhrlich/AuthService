@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace AuthService.Services;
+namespace AuthService.Services.Database;
 
 public class UsersDatabaseSettings
 {

@@ -30,7 +30,7 @@ public class ExceptionFilter: IActionFilter, IOrderedFilter
         else if (context.Exception is not null)
         {
             context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            _logger.LogError(context.Exception.Message);
+            _logger.LogError("Error occured:{}", context.Exception.Message);
             context.ExceptionHandled = true;
         }
     }

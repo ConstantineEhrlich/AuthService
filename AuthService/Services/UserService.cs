@@ -1,5 +1,7 @@
 using AuthService.Models;
-using AuthService.Services.Dto;
+using AuthService.Services.Database;
+using AuthService.Services.DTO;
+using AuthService.Services.UpdatePublisher;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 
@@ -10,13 +12,14 @@ public class UserService
     private readonly IPasswordHasher<User> _hasher;
     private readonly UsersDatabase _database;
     private readonly ILogger<UserService> _logger;
-    private readonly ProfileService _profiles;
+    private readonly IUserUpdatePublisher _updatePublisher;
 
-    public UserService(IPasswordHasher<User> hasher, UsersDatabase database, ILogger<UserService> logger)
+    public UserService(IPasswordHasher<User> hasher, UsersDatabase database, ILogger<UserService> logger, IUserUpdatePublisher updatePublisher)
     {
         _hasher = hasher;
         _database = database;
         _logger = logger;
+        _updatePublisher = updatePublisher;
     }
     
     public async Task CreateUser(SignUp signUpData)
@@ -47,6 +50,8 @@ public class UserService
         
         await _database.Users.UpdateOneAsync(FilterByLogin(signUpData.Login),
             Builders<User>.Update.Set(nameof(User.ProfileId), p.Id));
+
+        _updatePublisher.NewUserCreated(signUpData);
     }
 
     public async Task<User> GetUser(string login)

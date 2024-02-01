@@ -27,4 +27,9 @@ spec:
                 secretKeyRef:
                   name: authdb
                   key: password
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: rabbitmq-password
     
