@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch deploy
-        uses: actions/checkout@deploy
+        uses: actions/checkout@v2
+        with:
+          ref:
+            deploy
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
