@@ -41,13 +41,13 @@ public class UserController: ControllerBase
             ? TimeSpan.Zero
             : DateTime.UtcNow - u.LastFailedLogin.Value;
         
-        if (u.FailedLoginCount >= MAX_FAILED_LOGIN_ATTEMPTS &&
-            timeSinceLastFail.Hours < HOURS_SINCE_LAST_FAIL)
-        {
-            _logger.LogInformation("Too may login attempts for user {}", u.Login);
-            return BadRequest(new {Message = "Too many login attempts, please try again later"});
-        }
-        
+        if (u.FailedLoginCount >= MAX_FAILED_LOGIN_ATTEMPTS)
+            if (timeSinceLastFail.Hours < HOURS_SINCE_LAST_FAIL)
+            {
+                _logger.LogInformation("Too many login attempts for user {}", u.Login);
+                return BadRequest(new {Message = "Too many login attempts, please try again later"});    
+            }
+
         if (!await _users.PasswordIsCorrect(u, signInData.Password))
         {
             await _users.FailedLogin(u);
