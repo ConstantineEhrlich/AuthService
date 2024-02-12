@@ -27,7 +27,7 @@ public class ProfileService
     
     public async Task UpdateProfile(Profile profile)
     {
-        Profile target = await GetProfile(profile.Login);
+        Profile target = await GetProfile(profile.Login!);
         await _database.Profiles.ReplaceOneAsync(Builders<Profile>.Filter.Eq(nameof(Profile.Id), profile.Id), profile);
     }
 }

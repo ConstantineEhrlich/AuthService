@@ -6,7 +6,7 @@ public static class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         
-        builder.Configuration["JWT_KEY"] = System.Environment.GetEnvironmentVariable("JWT_KEY")
+        builder.Configuration["JWT_KEY"] = Environment.GetEnvironmentVariable("JWT_KEY")
             ?? throw new KeyNotFoundException("JWT_KEY variable not set");
         
         Startup startup = new(builder.Configuration);
@@ -16,6 +16,5 @@ public static class Program
         startup.Configure(app, app.Environment);
         
         app.Run();
-        ;
     }
 }

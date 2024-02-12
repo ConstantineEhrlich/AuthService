@@ -4,8 +4,8 @@ namespace AuthService.Services.DTO;
 
 public class SignUp
 {
-    [Required] public string Login { get; set; }
-    [Required] public string Password { get; set; }
-    [Required] public string Name { get; set; }
-    [Required] public string Email { get; set; }
+    [Required] public string Login { get; set; } = null!;
+    [Required] public string Password { get; set; } = null!;
+    [Required] public string Name { get; set; } = null!;
+    [Required] public string Email { get; set; } = null!;
 }

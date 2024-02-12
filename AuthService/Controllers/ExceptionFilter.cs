@@ -1,4 +1,3 @@
-using System.Net;
 using AuthService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

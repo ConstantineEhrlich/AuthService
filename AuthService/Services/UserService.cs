@@ -35,8 +35,9 @@ public class UserService
         {
             await _database.Users.InsertOneAsync(u);
         }
-        catch (MongoWriteException e) // Occurs when the login is not unique
+        catch (MongoWriteException _) // Occurs when the login is not unique
         {
+            _logger.LogError("MongoDB error: {}", _.Message);
             throw new AuthServiceException($"User {signUpData.Login} already exists!");
         }
 
